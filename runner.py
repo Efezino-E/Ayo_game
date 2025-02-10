@@ -1,5 +1,8 @@
 import pygame
-import math
+import os
+
+# get current path
+CURRENT_SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 # Initialize Pygame
 HEIGHT = 700 # must be greater than 600
@@ -12,11 +15,15 @@ pygame.display.set_caption("Ayo Game")
 X = (WIDTH - 1129) / 2
 Y = (HEIGHT - 448) / 2
 
+# define function to get true path of assets
+def true_path(path):
+    return os.path.join(CURRENT_SCRIPT_PATH, path)
+
 # storing game images
-board_image = pygame.image.load("assets\\ayo_board.png").convert_alpha()
+board_image = pygame.image.load(true_path("assets\\ayo_board.png")).convert_alpha()
 bead_images = {}
 for i in range(0, 22):
-    bead_images[i] = pygame.image.load(f"assets\\ayo_bead_{i}.png").convert_alpha()
+    bead_images[i] = pygame.image.load(true_path(f"assets\\ayo_bead_{i}.png")).convert_alpha()
 
 # image offsets for beads
 offset_x = 28
