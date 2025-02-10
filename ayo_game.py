@@ -31,8 +31,9 @@ class ayo_game():
 
         # remove beads from the position
         self.board[i][j] = 0
-        states["boards"].append(self.board.copy())
-        states["scores"].append(self.score.copy())
+        if path:
+            states["boards"].append(self.board.copy())
+            states["scores"].append(self.score.copy())
 
         # distribute the n beads in an anticlockwise manner
         order_index = DISTRIBUTION_ORDER.index((i, j))
@@ -40,8 +41,9 @@ class ayo_game():
             p = p % 12
             pos = DISTRIBUTION_ORDER[p]
             self.board[pos[0]][pos[1]] += 1
-            states["boards"].append(self.board.copy())
-            states["scores"].append(self.score.copy())
+            if path:
+                states["boards"].append(self.board.copy())
+                states["scores"].append(self.score.copy())
         
         return (pos[0], pos[1])
 
@@ -73,8 +75,9 @@ class ayo_game():
             elif self.board[position[0]][position[1]] == 4:
                 self.board[position[0]][position[1]] = 0
                 self.score[self.player] += 4
-                states["boards"].append(self.board.copy())
-                states["scores"].append(self.score.copy())
+                if path:
+                    states["boards"].append(self.board.copy())
+                    states["scores"].append(self.score.copy())
                 collected = self.player
                 break
 
@@ -87,15 +90,17 @@ class ayo_game():
                     collected = player
                     self.board[player][column] = 0
                     self.score[player] += 4
-                    states["boards"].append(self.board.copy())
-                    states["scores"].append(self.score.copy())
+                    if path:
+                        states["boards"].append(self.board.copy())
+                        states["scores"].append(self.score.copy())
         
         # if there are four beads left, give it to the last person who collected.
         if np.sum(self.board) == 4:
             self.board = np.full((2, 6), 0)
             self.score[collected] += 4
-            states["boards"].append(self.board.copy())
-            states["scores"].append(self.score.copy())
+            if path:
+                states["boards"].append(self.board.copy())
+                states["scores"].append(self.score.copy())
         
         if path:
             return states
@@ -254,6 +259,6 @@ class ayo_game():
         
         print("")
 
-# uncomment and run this script to play game on comand line
-# game = ayo_game()
-# game.run()
+if __name__ == "__main__":
+    game = ayo_game()
+    game.run()
