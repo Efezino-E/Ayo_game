@@ -173,13 +173,26 @@ class ayo_game():
             if opp_beads > 0 and self.board[self.player][column] > 0:
                 valid_pos.append((self.player, column))
             
-            # if opponent has no beads, the only valid moves should give the opponent beads to play with
-            elif opp_beads == 0:
-                if self.player == 0 and self.board[self.player][column] >= column + 1:
+            # if opponent has no beads, test all locations with beds by
+            elif opp_beads == 0 and self.board[self.player][column] > 0:
+                # creating a dummy ayo board
+                dummy_game = ayo_game()
+                dummy_game.board = self.board.copy()
+
+                # distributing the beads from the position being tested
+                dummy_game.full_distribute((self.player, column))
+
+                # check if opp now has beads from the distribution
+                dummy_opp_beads = np.sum(dummy_game.board[(self.player + 1) % 2])
+                
+                # add tested position as valid if dummy opp now has beads 
+                # (i.e., playing from this position will give opponent beads)
+                # Exception is when the there are 0 beads left in the board
+                if dummy_opp_beads > 0:
                     valid_pos.append((self.player, column))
-                elif self.player == 1 and self.board[self.player][column] >= 6 - column:
+                elif np.sum(dummy_game.board):
                     valid_pos.append((self.player, column))
-        
+
         return valid_pos
     
     def terminal(self):
