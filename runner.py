@@ -92,6 +92,12 @@ def render_board():
 # initialize ayo game
 game = ayo_game()
 
+# For debugging - test different initial board set ups and game states here
+# game.board = np.array([[0, 0, 0, 0, 0, 0], [3, 3, 0, 0, 1, 1]])
+# if np.sum(game.board) % 4 != 0:
+#     raise ValueError ("Testing/Debugging with invalid board")
+# game.player = 1
+
 # set white background
 screen.fill(WHITE)
 
@@ -105,7 +111,7 @@ render_beads(game.board)
 render_scores(game.score)
 
 # render initial game status
-render_game_status("Player 0's Turn")
+render_game_status(f"Player {game.player}'s Turn")
 
 # Game loop
 running = True
